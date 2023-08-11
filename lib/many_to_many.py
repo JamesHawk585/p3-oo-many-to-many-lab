@@ -21,6 +21,9 @@ class Book:
     count = 0 
     def __init__(self, title):
         self.title = title
+        Book.add_to_book_count()
+    def add_to_book_count():
+        Book.count += 1
 
 
 class Contract(Author, Book):
@@ -30,6 +33,11 @@ class Contract(Author, Book):
         self.author = author
         self.date = date
         self.royalties = royalties
+        Contract.add_to_contract_count()
+    def add_to_contract_count(self):
+        Contract.count += 1
+
+# contract_one = Contract("Harry")
 
 # The author property should be an instance of the Author class, while the book property should be an instance of the Book class. The date property should be a string that represents the date when the contract was signed, while the royalties property should be a number that represents the percentage of royalties that the author will receive for the book.
 
