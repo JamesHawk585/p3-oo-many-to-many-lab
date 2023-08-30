@@ -1,7 +1,6 @@
 class Author:
     count = 0
     royalties = []
-    books = []
     def __init__(self, name):
         self.name = name
         self.__contracts = []
@@ -12,48 +11,46 @@ class Author:
     def add_to_royalties(self):
          self.author.royalties.append(self)
     def contracts(self):
-        return self.__contracts
-    def sign_contract(self, book, date, royalties):
-        self.date = date
-        self.royalties = royalties
-        new_contract = Contract(self, book, date, royalties)
-        self.__contracts.append(new_contract)
-        # self.__books.append(book)
-        # Append book object to list of books
-        return self.__contracts 
-    def total_royalties(self):
-        total_royalties = sum(Author.royalties)
-        return total_royalties
+        return self.__contracts  
     def books(self):
         for contract in self.__contracts:
             if contract.book not in self.__books:
                 self.__books.append(contract.book)
                 return self.__books 
-
-
-        new_book = Book(self)
-        self.__books.append(new_book)
-        return self.__books
-        
+    def sign_contract(self, book, date, royalties):
+        new_contract = Contract(self, book, date, royalties)
+        self.__contracts.append(new_contract)
+        # self.__books.append(book)
+        # Append book object to list of books
+        # return self.__contracts
+        book.sign_contract(self, date, royalties) 
+    def total_royalties(self):
+        total_royalties = sum(Author.royalties)
+        return total_royalties
     
-
-# The Author class should have the following methods:
-#  [] contracts(self): This method should return a list of related contracts.
-#  [] books(self): This method should return a list of related books using the Contract class as an intermediary.
-#  [] sign_contract(book, date, royalties): This method should create and return a new Contract object between the author and the specified book with the specified date and royalties
-#  [] total_royalties(): This method should return the total amount of royalties that the author has earned from all of their contracts.
-
 class Book:
     count = 0 
-    contracts = [] 
     def __init__(self, title):
         self.title = title
+        self.__contracts_list = []
         self.add_to_book_count()
+        self.contracts()
     def add_to_book_count(self):
         Book.count += 1
+    def contracts(self):
+            # Appends a string to the end of the self.__contract_list instead of a book object. 
+        return self.__contracts_list
+    def sign_contract(self, author, date, royalties):
+        new_contract = Contract(self, author, date, royalties)
+        self.__contracts_list.append(new_contract)
+        
+
+        # Use a getter function to access the self.__contracts attribute in Author()? 
+        # Assertion error is occurring because self.__contracts remains an empty list? 
 
 j_k_rowling = Author("J.K. Rowling")
-harry_potter_sorcerer_stone = Book("Harry Potter and th Sorcer's Stone")
+harry_potter_sorcerer_stone = Book("Harry Potter and the Sorcer's Stone")
+
 harry_potter_chamber_secrets = Book("Harry Potter and the Chamber of Secrets")
 
 class Contract():
@@ -68,7 +65,7 @@ class Contract():
             raise Exception("Please enter valid date")
         self.royalties = royalties
         if not isinstance(royalties, int):
-            raise Exception("Please enetr valid int.")
+            raise Exception("Please enter valid int.")
         self.author.contracts().append(self)
         self.add_to_contract_count()
     def add_to_contract_count(self):
