@@ -17,13 +17,12 @@ class Author:
             if contract.book not in self.__books:
                 self.__books.append(contract.book)
                 return self.__books 
-    def sign_contract(self, book, date, royalties):
-        new_contract = Contract(self, book, date, royalties)
-        self.__contracts.append(new_contract)
+    def sign_contract(self, contract):
+        self.__contracts.append(contract)
         # self.__books.append(book)
         # Append book object to list of books
         # return self.__contracts
-        book.sign_contract(self, date, royalties) 
+        # To Do: 
     def total_royalties(self):
         total_royalties = sum(Author.royalties)
         return total_royalties
@@ -32,21 +31,48 @@ class Book:
     count = 0 
     def __init__(self, title):
         self.title = title
+        # Below is a list of all contracts associated with an instance of the Book class. 
         self.__contracts_list = []
         self.add_to_book_count()
-        self.contracts()
     def add_to_book_count(self):
         Book.count += 1
     def contracts(self):
+        
             # Appends a string to the end of the self.__contract_list instead of a book object. 
+            # Generator expression? 
         return self.__contracts_list
-    def sign_contract(self, author, date, royalties):
-        new_contract = Contract(self, author, date, royalties)
-        self.__contracts_list.append(new_contract)
+        # return [contract for contract in Contract.all if contract.book == self] 
+    def sign_contract(self, contract):
+    
+        # new_contract = Contract(self, author, date, royalties)
+        self.__contracts_list.append(contract)
         
 
         # Use a getter function to access the self.__contracts attribute in Author()? 
         # Assertion error is occurring because self.__contracts remains an empty list? 
+    def authors(self):
+        # authors = self.__contracts_list.filter(authors)
+        return [contract.author for contract in self.__contracts_list]
+        # Returns a list of the books authors.
+        # Use a generator expression to create a list of authors 
+    
+
+    
+        # return [author for author in Author.all if author.book == self ]
+    # lIST Comprehension vs generator expression 
+    
+    
+
+
+
+
+
+
+
+
+
+
+
 
 j_k_rowling = Author("J.K. Rowling")
 harry_potter_sorcerer_stone = Book("Harry Potter and the Sorcer's Stone")
@@ -66,7 +92,8 @@ class Contract():
         self.royalties = royalties
         if not isinstance(royalties, int):
             raise Exception("Please enter valid int.")
-        self.author.contracts().append(self)
+        self.author.sign_contract(self)
+        book.sign_contract(self)
         self.add_to_contract_count()
     def add_to_contract_count(self):
         Contract.count += 1
