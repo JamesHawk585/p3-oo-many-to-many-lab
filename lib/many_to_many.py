@@ -17,8 +17,8 @@ class Author:
             if contract.book not in self.__books:
                 self.__books.append(contract.book)
                 return self.__books 
-    def sign_contract(self, contract):
-        self.__contracts.append(contract)
+    def sign_contract(self, book, date, royalties):
+        self.__contracts.append(Contract(self, book, date, royalties))
         # self.__books.append(book)
         # Append book object to list of books
         # return self.__contracts
@@ -86,13 +86,15 @@ class Contract():
         if not isinstance(book, Book):
             raise Exception(" Please ensure book is a valid obj.")
         self.author = author
+        if not isinstance(author, Author):
+            raise Exception("Please enter a valid object")
         self.date = date
         if not isinstance(date, str):
             raise Exception("Please enter valid date")
         self.royalties = royalties
         if not isinstance(royalties, int):
             raise Exception("Please enter valid int.")
-        self.author.sign_contract(self)
+        # self.author.sign_contract(self)
         book.sign_contract(self)
         self.add_to_contract_count()
     def add_to_contract_count(self):
